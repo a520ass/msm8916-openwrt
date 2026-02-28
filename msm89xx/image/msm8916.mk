@@ -28,6 +28,17 @@ define Device/msm8916
   ARTIFACT/firmware.zip := generate-firmware
 endef
 
+define Device/thwc-ufi001c
+  $(Device/msm8916)
+  DEVICE_VENDOR := THWC
+  DEVICE_MODEL := ufi001c
+  FILESYSTEMS := squashfs
+  DEVICE_PACKAGES := configs-dongle wpad-basic-wolfssl rmtfs uci-usb-gadget \
+                     block-mount f2fs-tools prepare-rootfs-data \
+                     msm-firmware-dumper
+endef
+TARGET_DEVICES += thwc-ufi001c
+
 define Device/yiming-uz801v3
   $(Device/msm8916)
   DEVICE_VENDOR := YiMing

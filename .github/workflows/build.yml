@@ -11,9 +11,6 @@ on:
         default: ufi001c
         options:
           - ufi001c
-          - m9s
-          - mf68e
-          - uf02
 
 env:
   UPLOAD_FIRMWARE: true
@@ -42,8 +39,7 @@ jobs:
     - name: Clone OpenWrt source code
       run: |
         df -hT $PWD
-        git clone https://git.openwrt.org/openwrt/openwrt.git openwrt
-        git -C openwrt checkout 00ceb1ed1763f7479df6edf92ffada948f0e7d45
+        git clone -b v25.12.0-rc5 https://git.openwrt.org/openwrt/openwrt.git openwrt
 
     - name: Load msm89xx target and packages
       run: |

@@ -9,7 +9,7 @@ TMPDIR=$(mktemp -d)
 IMG="${TMPDIR}/gpt.img"
 
 # Total size in 512B sectors
-TOT_SECTORS=7569408
+TOT_SECTORS=7471000
 
 # GPT boundaries
 FIRST_LBA=34

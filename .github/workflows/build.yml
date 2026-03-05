@@ -39,7 +39,7 @@ jobs:
     - name: Clone OpenWrt source code
       run: |
         df -hT $PWD
-        git clone -b v25.12.0-rc5 https://git.openwrt.org/openwrt/openwrt.git openwrt
+        git clone -b v25.12.0 https://git.openwrt.org/openwrt/openwrt.git openwrt
 
     - name: Load msm89xx target and packages
       run: |

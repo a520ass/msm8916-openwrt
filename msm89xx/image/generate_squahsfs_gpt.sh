@@ -20,12 +20,17 @@ ROOTFS_START=348194
 ROOTFS_SIZE=262144
 ROOTFS_END=$((ROOTFS_START + ROOTFS_SIZE - 1))
 
-# rootfs_data: remaining space
+# rootfs_data: 256 MiB = 524288 sectors (overlay)
 ROOTFSDATA_START=$((ROOTFS_END + 1))
-ROOTFSDATA_SIZE=$((LAST_LBA - ROOTFSDATA_START + 1))
+ROOTFSDATA_SIZE=524288
+ROOTFSDATA_END=$((ROOTFSDATA_START + ROOTFSDATA_SIZE - 1))
+
+# system: 剩余所有空间 (ext4 专用)
+SYS_START=$((ROOTFSDATA_END + 1))
+SYS_SIZE=$((LAST_LBA - SYS_START + 1))
 
 # Validation
-[ ${ROOTFSDATA_SIZE} -gt 0 ] || { echo "ERROR: No space for rootfs_data"; exit 1; }
+[ ${SYS_SIZE} -gt 0 ] || { echo "ERROR: No space for system"; exit 1; }
 
 # Create image with exact size
 truncate -s $((TOT_SECTORS * 512)) "${IMG}"
@@ -53,7 +58,8 @@ gpt.img11 : start=213026, size=2048, type=A053AA7F-40B8-4B1C-BA08-2F68AC71A4F4, 
 gpt.img12 : start=215074, size=2048, type=400FFDCD-22E0-47E7-9A23-F16ED9382388, name="aboot"
 gpt.img13 : start=217122, size=131072, type=20117F86-E985-4357-B9EE-374BC1D8487D,uuid=80780B1D-0FE1-27D3-23E4-9244E62F8C46 name="boot"
 gpt.img14 : start=${ROOTFS_START}, size=${ROOTFS_SIZE}, type=1B81E7E6-F50D-419B-A739-2AEEF8DA3335,uuid=6A15912A-0C98-8341-9E22-A7087C632C5B name="rootfs"
-gpt.img15 : start=${ROOTFSDATA_START}, type=1B81E7E6-F50D-419B-A739-2AEEF8DA3335,uuid=259764F8-E2CA-30ED-9978-F87AD7284E28, name="rootfs_data"
+gpt.img15 : start=${ROOTFSDATA_START}, size=${ROOTFSDATA_SIZE}, type=1B81E7E6-F50D-419B-A739-2AEEF8DA3335, name="rootfs_data"
+gpt.img16 : start=${SYS_START}, type=1B81E7E6-F50D-419B-A739-2AEEF8DA3335,uuid=259764F8-E2CA-30ED-9978-F87AD7284E28, name="system"
 EOF
 
 # size=${ROOTFSDATA_SIZE},
